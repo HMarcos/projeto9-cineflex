@@ -1,6 +1,16 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import Header from "./Header";
+import SelecaoDoFilme from "./SelecaoDoFilmes";
+
 function App(){
     return (
-        <h1>Olá, Mundo!</h1>
+        <BrowserRouter>
+        <Header />
+        <Routes>
+            <Route path="/" element={<SelecaoDoFilme />}></Route>
+        </Routes>
+        </BrowserRouter>
     )
 }
 
