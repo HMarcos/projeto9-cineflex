@@ -58,7 +58,7 @@ export default SelecaoDaSessao;
 
 const Conteudo = styled.main`
     margin-top: 67px;
-    margin-bottom: 130px;
+    margin-bottom: 160px;
 
     h2{
         height: 110px;

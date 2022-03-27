@@ -22,7 +22,7 @@ export default Footer;
 
 const FooterCineflex = styled.footer`
     
-    height: 117px;
+    min-height: 117px;
 
     position: fixed;
     bottom: 0;
@@ -62,7 +62,7 @@ const Info = styled.div`
     flex-direction: column;
     justify-content: center;
     margin-left: 14px;
-    
+
     span{
         font-weight: 400;
         font-size: 26px;

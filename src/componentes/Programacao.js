@@ -1,15 +1,17 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-function Programacao(props){
-    const {dia, data, horarios} = props;
+function Programacao(props) {
+    const { dia, data, horarios } = props;
 
-    console.log(horarios);
-
-    return(
+    return (
         <Dia>
             <h3>{dia} - {data}</h3>
             <Horarios>
-                {horarios.map((horario) => <Sessao key={horario.id}>{horario.name}</Sessao>)}
+                {horarios.map((horario) =>
+                    <Link key={horario.id} to={`/assentos/${horario.id}`}>
+                        <Sessao key={horario.id}>{horario.name}</Sessao>
+                    </Link>)}
             </Horarios>
         </Dia>
     );
@@ -43,6 +45,7 @@ const Horarios = styled.div`
     flex-wrap: wrap;
 
     margin-top: 25px;
+
 `;
 
 const Sessao = styled.span`
