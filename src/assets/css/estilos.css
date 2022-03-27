@@ -13,5 +13,16 @@ body {
     --cor-bg-poster: #FFFFFF;
     --cor-bg-sessao: #E8833A;
     --cor-ft-sessao: #FFFFFF;
-    --cot-info-footer: #293845;
+    --cor-info-footer: #293845;
+    --cor-assento-disponivel: #C3CFD9;
+    --cor-assento-indisponivel: #FBE192;
+    --cor-assento-selecionado: #8DD7CF;
+    --cor-borda-assento-disponivel: #7B8B99;
+    --cor-borda-assento-indisponivel: #F7C52B;
+    --cor-borda-assento-selecionado: #1AAE9E;
+    --cor-texto-legenda: #4E5A65;
+}
+
+button {
+    border: none;
 }

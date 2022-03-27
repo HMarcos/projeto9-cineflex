@@ -25,8 +25,7 @@ function SelecaoDaSessao() {
             alert(`Não foi possível recuperar os dados do servidor.
         Erro ${err.response.status}: ${err.response.data}`)
         })
-    }, [])
-
+    }, [idFilme])
 
     const dias = filme !== null ? filme.days : [];
 

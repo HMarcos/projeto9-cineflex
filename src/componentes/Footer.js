@@ -68,7 +68,7 @@ const Info = styled.div`
         font-size: 26px;
         line-height: 30px;
 
-        color: var(--cot-info-footer);
+        color: var(--cor-info-footer);
     }
 `;
 
