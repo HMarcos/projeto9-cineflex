@@ -8,6 +8,8 @@ function Header() {
     )
 }
 
+export default Header;
+
 const HeaderCineflex = styled.header`
     width: 100vw;
     height: 67px;
@@ -31,7 +33,7 @@ const HeaderCineflex = styled.header`
     }
 `;
 
-export default Header;
+
 
 
 

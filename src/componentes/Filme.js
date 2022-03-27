@@ -12,6 +12,7 @@ function Filme(props) {
     )
 
 }
+export default Filme;
 
 const Poster = styled.div`
 
@@ -35,4 +36,3 @@ const Poster = styled.div`
 
 `;
 
-export default Filme;

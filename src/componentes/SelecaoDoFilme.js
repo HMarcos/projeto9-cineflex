@@ -34,6 +34,8 @@ function SelecaoDoFilme() {
 }
 
 
+export default SelecaoDoFilme;
+
 // Styled - Components
 const Conteudo = styled.main`
     margin-top: 67px;
@@ -66,5 +68,3 @@ const Filmes = styled.section`
 `
 
 
-
-export default SelecaoDoFilme;
