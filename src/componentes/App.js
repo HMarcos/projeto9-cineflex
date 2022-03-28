@@ -31,9 +31,9 @@ function App() {
             <Header />
             <Routes>
                 <Route path="/" element={<SelecaoDoFilme />}></Route>
-                <Route path="/sessoes/:idFilme" element={<SelecaoDaSessao />}></Route>
+                <Route path="/filme/:idFilme" element={<SelecaoDaSessao />}></Route>
                 <Route
-                    path="/assentos/:idSessao"
+                    path="/sessao/:idSessao"
                     element={<SelecaoDeAssentos
                         atualizarInfoPedido={atualizarInfoPedido} />}>
                 </Route>

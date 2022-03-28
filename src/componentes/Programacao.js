@@ -9,7 +9,7 @@ function Programacao(props) {
             <h3>{dia} - {data}</h3>
             <Horarios>
                 {horarios.map((horario) =>
-                    <Link key={horario.id} to={`/assentos/${horario.id}`}>
+                    <Link key={horario.id} to={`/sessao/${horario.id}`}>
                         <Sessao key={horario.id}>{horario.name}</Sessao>
                     </Link>)}
             </Horarios>

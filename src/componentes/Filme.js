@@ -4,7 +4,7 @@ import styled from "styled-components";
 function Filme(props) {
     const { id, imagem, titulo } = props;
     return (
-        <Link to={`/sessoes/${id}`}>
+        <Link to={`/filme/${id}`}>
             <Poster>
                 <img src={imagem} alt={titulo} />
             </Poster>

@@ -193,6 +193,7 @@ export default SelecaoDeAssentos;
 
 const Conteudo = styled.main`
     margin-top: 67px;
+    margin-bottom: 160px;
 
     h2{
         height: 110px;

@@ -103,6 +103,7 @@ const BotaoVoltarHome = styled.button`
 
     margin: 0 auto;
     margin-top: 70px;
+    margin-bottom: 30px;
 
     background-color: var(--cor-bg-botao-voltar);
     border-radius: 3px;
