@@ -5,14 +5,22 @@ import Header from "./Header";
 import SelecaoDoFilme from "./SelecaoDoFilme";
 import SelecaoDaSessao from "./SelecaoDaSessao";
 import SelecaoDeAssentos from "./SelecaoDeAssentos";
-
+import TelaSucesso from "./TelaSucesso";
 
 function App() {
 
-    const [infoPedido, setInfoPedido] = useState({});
+    const [infoPedido, setInfoPedido] = useState({
+        assentosID: [],
+        numerosDosAssentos: [],
+        nomeComprador: "",
+        CPF: "",
+        filme: "",
+        horario: "",
+        data: ""
+    });
 
     function atualizarInfoPedido(pedido) {
-        setInfoPedido(pedido);
+        setInfoPedido({...pedido});
     }
 
     console.log("App:");
@@ -29,6 +37,7 @@ function App() {
                     element={<SelecaoDeAssentos
                         atualizarInfoPedido={atualizarInfoPedido} />}>
                 </Route>
+                <Route path="/sucesso" element={<TelaSucesso informacaoPedido={infoPedido} /> }></Route>
             </Routes>
         </BrowserRouter>
     )

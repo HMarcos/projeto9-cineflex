@@ -25,6 +25,10 @@ body {
     --cor-texto-botao-reservar: #FFFFFF;
     --cor-label-info-comprador: #293845;
     --cor-input-placeholder: #AFAFAF;
+    --cor-titulo-sucesso: #247A6B;
+    --cor-secao-sucesso: #293845;
+    --cor-bg-botao-voltar: #E8833A;
+    --cor-texto-botao-voltar: #FFFFFF;
 }
 
 button {

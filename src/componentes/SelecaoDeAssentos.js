@@ -64,7 +64,7 @@ function SelecaoDeAssentos(props) {
 
         promessa.then(() => {
             atualizarInfoPedido(pedido);
-            navigate("/");
+            navigate("/sucesso");
         })
 
         promessa.catch((err) => {
