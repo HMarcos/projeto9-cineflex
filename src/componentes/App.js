@@ -23,9 +23,6 @@ function App() {
         setInfoPedido({...pedido});
     }
 
-    console.log("App:");
-    console.log(infoPedido);
-
     return (
         <BrowserRouter>
             <Header />

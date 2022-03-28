@@ -55,23 +55,29 @@ function SelecaoDeAssentos(props) {
 
     function reservarAssentos(event) {
         event.preventDefault();
-        
-        const promessa = axios.post(LINK_API_RESERVAR_ASSENTOS, 
-            {ids: pedido.assentosID,
-            name: pedido.nomeComprador,
-            cpf: pedido.CPF
-        })
 
-        promessa.then(() => {
-            atualizarInfoPedido(pedido);
-            navigate("/sucesso");
-        })
+        if (pedido.assentosID.length !== 0) {
+            const promessa = axios.post(LINK_API_RESERVAR_ASSENTOS,
+                {
+                    ids: pedido.assentosID,
+                    name: pedido.nomeComprador,
+                    cpf: pedido.CPF
+                })
 
-        promessa.catch((err) => {
-            alert(`Não foi possível atualizar os dados do servidor.
-        Erro ${err.response.status}: ${err.response.data}`)
-        })
-        
+            promessa.then(() => {
+                atualizarInfoPedido(pedido);
+                navigate("/sucesso");
+            })
+
+            promessa.catch((err) => {
+                alert(`Não foi possível atualizar os dados do servidor.
+                       Erro ${err.response.status}: ${err.response.data}`)
+            })
+        }
+        else {
+            alert("Selecione ao menos um assento!");
+        }
+
     }
 
     function adicionarAssento(assentoID, numeroDoAssento) {
@@ -158,6 +164,9 @@ function SelecaoDeAssentos(props) {
                             id="nome"
                             type="text"
                             placeholder="Digite o seu nome..."
+                            pattern="^[a-zA-Z ]+"
+                            title="É permitido somente letras"
+                            maxLength={50}
                             value={pedido.nomeComprador}
                             onChange={(event) => {
                                 setPedido({ ...pedido, nomeComprador: event.target.value })
@@ -170,6 +179,9 @@ function SelecaoDeAssentos(props) {
                             id="cpf"
                             type="text"
                             placeholder="Digite o seu CPF..."
+                            pattern="^[0-9]{11}"
+                            title="É necessário 11 números"
+                            maxLength={11}
                             value={pedido.CPF}
                             onChange={(event) => {
                                 setPedido({ ...pedido, CPF: event.target.value })

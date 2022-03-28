@@ -5,6 +5,15 @@ import { css } from "styled-components"
 function TelaSucesso(props) {
     const { informacaoPedido } = props;
 
+    function formatarCPF(cpf) {
+        const parte1 = cpf.slice(0, 3);
+        const parte2 = cpf.slice(3, 6);
+        const parte3 = cpf.slice(6, 9);
+        const parte4 = cpf.slice(9);
+
+        return parte1 + "." + parte2 + "." + parte3 + "-" + parte4;
+    }
+
     return (
         <Conteudo>
             <h2>Pedido feito <br /> com sucesso!</h2>
@@ -22,9 +31,9 @@ function TelaSucesso(props) {
             <InfoComprador>
                 <h3>Comprador</h3>
                 <span>Nome: {informacaoPedido.nomeComprador}</span>
-                <span>CPF: {informacaoPedido.CPF}</span>
+                <span>CPF: {formatarCPF(informacaoPedido.CPF)}</span>
             </InfoComprador>
-            
+
             <Link to="/">
                 <BotaoVoltarHome> Voltar pra Home </BotaoVoltarHome>
             </Link>
