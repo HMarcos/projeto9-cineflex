@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import Assento from "./Assento";
@@ -9,17 +9,41 @@ import Footer from "./Footer";
 const LINK_API_SESSOES = "https://mock-api.driven.com.br/api/v5/cineflex/showtimes";
 
 
-function SelecaoDeAssentos() {
+function SelecaoDeAssentos(props) {
+
+    const { atualizarInfoCompra } = props;
 
     const [sessao, setSessao] = useState(null);
+    const [compra, setCompra] = useState({
+        assentosID: [],
+        numerosDosAssentos: [],
+        nomeComprador: "",
+        CPF: "",
+        filme: "",
+        horario: "",
+        data: ""
+    });
 
     const params = useParams();
     const idSessao = params.idSessao;
 
+    const navigate = useNavigate();
+
+    const disponibilidades = ["Selecionado", "Disponível", "Indisponível"];
+
     useEffect(() => {
         const promessa = axios.get(`${LINK_API_SESSOES}/${idSessao}/seats`);
 
-        promessa.then((response) => { setSessao(response.data) });
+        promessa.then((response) => { 
+            const sessao = response.data;
+            setSessao(sessao);
+            setCompra({
+                ...compra,
+                filme: sessao.movie.title,
+                horario: sessao.name,
+                data: sessao.day.date
+            }) 
+        });
 
         promessa.catch((err) => {
             alert(`Não foi possível recuperar os dados do servidor.
@@ -28,9 +52,52 @@ function SelecaoDeAssentos() {
 
     }, [idSessao])
 
-    const assentos = sessao !== null ? sessao.seats : [];
 
-    console.log(assentos);
+    function redirecionarDados() {
+        atualizarInfoCompra("Teste");
+    }
+
+    function adicionarAssento(assentoID, numeroDoAssento) {
+        const listaDeAssentosID = [...compra.assentosID];
+        const numerosDosAssentos = [...compra.numerosDosAssentos];
+
+        listaDeAssentosID.push(assentoID);
+        listaDeAssentosID.sort(comparaNumeros);
+
+        numerosDosAssentos.push(Number(numeroDoAssento));
+        numerosDosAssentos.sort(comparaNumeros);
+
+        setCompra({
+            ...compra,
+            assentosID: listaDeAssentosID,
+            numerosDosAssentos: numerosDosAssentos
+        });
+
+    }
+
+    function removerAssento(assentoID, numeroDoAssento) {
+        const listaDeAssentosID = [...compra.assentosID];
+        const numerosDosAssentos = [...compra.numerosDosAssentos];
+
+        listaDeAssentosID.splice(listaDeAssentosID.indexOf(assentoID), 1);
+        listaDeAssentosID.sort(comparaNumeros);
+
+        numerosDosAssentos.splice(numerosDosAssentos.indexOf(Number(numeroDoAssento)), 1);
+        numerosDosAssentos.sort(comparaNumeros);
+
+        setCompra({
+            ...compra,
+            assentosID: listaDeAssentosID,
+            numerosDosAssentos: numerosDosAssentos
+        });
+
+    }
+
+
+    console.log(compra)
+
+
+    const assentos = sessao !== null ? sessao.seats : [];
 
     const footer = sessao !== null ?
         <Footer
@@ -39,17 +106,25 @@ function SelecaoDeAssentos() {
             horario={`${sessao.day.weekday} - ${sessao.name}`} />
         : <></>;
 
-    const disponibilidades = ["Selecionado", "Disponível", "Indisponível"];
 
     return (
         <>
             <Conteudo>
                 <h2>Selecione o(s) assento(s)</h2>
+
                 <Assentos>
                     {assentos.map((assento) =>
-                        <Assento key={assento.id} estaDisponivel={assento.isAvailable} numero={assento.name} />
+                        <Assento
+                            key={assento.id}
+                            id={assento.id}
+                            estaDisponivel={assento.isAvailable}
+                            numero={assento.name}
+                            adicionarAssento={adicionarAssento}
+                            removerAssento={removerAssento}
+                        />
                     )}
                 </Assentos>
+
                 <LegendaAssentos>
                     {disponibilidades.map((disponibilidade) => {
                         return (<Item key={disponibilidade} status={disponibilidade}>
@@ -58,11 +133,21 @@ function SelecaoDeAssentos() {
                         </Item>);
                     })}
                 </LegendaAssentos>
-                {footer}
+
+                <ReservaDosAssentos>
+                    <form onSubmit={redirecionarDados}>
+                    <button onClick={redirecionarDados}>Reservar assentos(s)</button>
+                    </form>
+                </ReservaDosAssentos>
+
             </Conteudo>
+
+            {footer}
         </>
     )
 }
+
+function comparaNumeros(a, b) { if (a === b) return 0; if (a < b) return -1; if (a > b) return 1; };
 
 export default SelecaoDeAssentos;
 
@@ -165,5 +250,29 @@ const Item = styled.div`
         letter-spacing: -0.013em;
 
         margin-top: 1px;
+    }
+`;
+
+const ReservaDosAssentos = styled.section`
+    button {
+    width: 225px;
+    height: 42px;
+
+    margin: 0 auto;
+
+    background-color: var(--cor-bg-botao-reservar);
+    border-radius: 3px;
+
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 21px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    letter-spacing: 0.04em;
+
+    color: var(--cor-texto-botao-reservar);
     }
 `;

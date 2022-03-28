@@ -2,7 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 
 function Assento(props) {
-    const { estaDisponivel, numero } = props;
+    const { id, estaDisponivel, numero, adicionarAssento, removerAssento } = props;
 
     const [status, setStatus] = useState(
         estaDisponivel ? "disponivel" : "indisponivel"
@@ -11,9 +11,11 @@ function Assento(props) {
     function alterarStatus(){
         if (status === "disponivel"){
             setStatus("selecionado");
+            adicionarAssento(id, numero);
         }
         else if (status === "selecionado"){
             setStatus("disponivel");
+            removerAssento(id, numero);
         }
         else {
             alert("Esse assento não está disponível!");
