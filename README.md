@@ -4,7 +4,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Deploy Link
 
-LLink to access the mobile application: https://projeto9-cineflex-lilac.vercel.app
+Link to access the mobile application: https://projeto9-cineflex-lilac.vercel.app
 
 ## Available Scripts
 
