@@ -23,6 +23,8 @@ body {
     --cor-texto-legenda: #4E5A65;
     --cor-bg-botao-reservar: #E8833A;
     --cor-texto-botao-reservar: #FFFFFF;
+    --cor-label-info-comprador: #293845;
+    --cor-input-placeholder: #AFAFAF;
 }
 
 button {

@@ -7,14 +7,14 @@ import Assento from "./Assento";
 import Footer from "./Footer";
 
 const LINK_API_SESSOES = "https://mock-api.driven.com.br/api/v5/cineflex/showtimes";
-
+const LINK_API_RESERVAR_ASSENTOS = "https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many";
 
 function SelecaoDeAssentos(props) {
 
-    const { atualizarInfoCompra } = props;
+    const { atualizarInfoPedido } = props;
 
     const [sessao, setSessao] = useState(null);
-    const [compra, setCompra] = useState({
+    const [pedido, setPedido] = useState({
         assentosID: [],
         numerosDosAssentos: [],
         nomeComprador: "",
@@ -34,15 +34,15 @@ function SelecaoDeAssentos(props) {
     useEffect(() => {
         const promessa = axios.get(`${LINK_API_SESSOES}/${idSessao}/seats`);
 
-        promessa.then((response) => { 
+        promessa.then((response) => {
             const sessao = response.data;
             setSessao(sessao);
-            setCompra({
-                ...compra,
+            setPedido({
+                ...pedido,
                 filme: sessao.movie.title,
                 horario: sessao.name,
                 data: sessao.day.date
-            }) 
+            })
         });
 
         promessa.catch((err) => {
@@ -53,13 +53,30 @@ function SelecaoDeAssentos(props) {
     }, [idSessao])
 
 
-    function redirecionarDados() {
-        atualizarInfoCompra("Teste");
+    function reservarAssentos(event) {
+        event.preventDefault();
+        
+        const promessa = axios.post(LINK_API_RESERVAR_ASSENTOS, 
+            {ids: pedido.assentosID,
+            name: pedido.nomeComprador,
+            cpf: pedido.CPF
+        })
+
+        promessa.then(() => {
+            atualizarInfoPedido(pedido);
+            navigate("/");
+        })
+
+        promessa.catch((err) => {
+            alert(`Não foi possível atualizar os dados do servidor.
+        Erro ${err.response.status}: ${err.response.data}`)
+        })
+        
     }
 
     function adicionarAssento(assentoID, numeroDoAssento) {
-        const listaDeAssentosID = [...compra.assentosID];
-        const numerosDosAssentos = [...compra.numerosDosAssentos];
+        const listaDeAssentosID = [...pedido.assentosID];
+        const numerosDosAssentos = [...pedido.numerosDosAssentos];
 
         listaDeAssentosID.push(assentoID);
         listaDeAssentosID.sort(comparaNumeros);
@@ -67,8 +84,8 @@ function SelecaoDeAssentos(props) {
         numerosDosAssentos.push(Number(numeroDoAssento));
         numerosDosAssentos.sort(comparaNumeros);
 
-        setCompra({
-            ...compra,
+        setPedido({
+            ...pedido,
             assentosID: listaDeAssentosID,
             numerosDosAssentos: numerosDosAssentos
         });
@@ -76,8 +93,8 @@ function SelecaoDeAssentos(props) {
     }
 
     function removerAssento(assentoID, numeroDoAssento) {
-        const listaDeAssentosID = [...compra.assentosID];
-        const numerosDosAssentos = [...compra.numerosDosAssentos];
+        const listaDeAssentosID = [...pedido.assentosID];
+        const numerosDosAssentos = [...pedido.numerosDosAssentos];
 
         listaDeAssentosID.splice(listaDeAssentosID.indexOf(assentoID), 1);
         listaDeAssentosID.sort(comparaNumeros);
@@ -85,8 +102,8 @@ function SelecaoDeAssentos(props) {
         numerosDosAssentos.splice(numerosDosAssentos.indexOf(Number(numeroDoAssento)), 1);
         numerosDosAssentos.sort(comparaNumeros);
 
-        setCompra({
-            ...compra,
+        setPedido({
+            ...pedido,
             assentosID: listaDeAssentosID,
             numerosDosAssentos: numerosDosAssentos
         });
@@ -94,7 +111,7 @@ function SelecaoDeAssentos(props) {
     }
 
 
-    console.log(compra)
+    //console.log(pedido)
 
 
     const assentos = sessao !== null ? sessao.seats : [];
@@ -135,8 +152,31 @@ function SelecaoDeAssentos(props) {
                 </LegendaAssentos>
 
                 <ReservaDosAssentos>
-                    <form onSubmit={redirecionarDados}>
-                    <button onClick={redirecionarDados}>Reservar assentos(s)</button>
+                    <form onSubmit={reservarAssentos}>
+                        <label htmlFor="nome">Nome do Comprador:</label>
+                        <input
+                            id="nome"
+                            type="text"
+                            placeholder="Digite o seu nome..."
+                            value={pedido.nomeComprador}
+                            onChange={(event) => {
+                                setPedido({ ...pedido, nomeComprador: event.target.value })
+                            }}
+                            required>
+                        </input>
+
+                        <label htmlFor="cpf">CPF do Comprador:</label>
+                        <input
+                            id="cpf"
+                            type="text"
+                            placeholder="Digite o seu CPF..."
+                            value={pedido.CPF}
+                            onChange={(event) => {
+                                setPedido({ ...pedido, CPF: event.target.value })
+                            }}
+                            required>
+                        </input>
+                        <button type="submit" > Reservar assentos(s)</button>
                     </form>
                 </ReservaDosAssentos>
 
@@ -254,25 +294,65 @@ const Item = styled.div`
 `;
 
 const ReservaDosAssentos = styled.section`
-    button {
-    width: 225px;
-    height: 42px;
+    display: flex;
+    flex-direction: column;
+    width: 327px;
 
     margin: 0 auto;
+    margin-top: 40px;
 
-    background-color: var(--cor-bg-botao-reservar);
-    border-radius: 3px;
 
-    font-weight: 400;
-    font-size: 18px;
-    line-height: 21px;
+
+    label {
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 21px;
+
+        color: var(--cor-label-info-comprador);
+    }
+
+    input {
+        width: 100%;
+        height: 51px;
+
+        border: 1px solid #D5D5D5;
+        box-sizing: border-box;
+        border-radius: 3px;
+
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 21px;
+
+        margin-bottom: 10px;
+        padding-left: 18px;
+
+    }
+
+    input::placeholder{
+        font-style: italic;
+        color: var(--cor-input-placeholder);
+    }
     
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    letter-spacing: 0.04em;
+    button {
+        width: 225px;
+        height: 42px;
 
-    color: var(--cor-texto-botao-reservar);
+        margin: 0 auto;
+        margin-top: 57px;
+
+        background-color: var(--cor-bg-botao-reservar);
+        border-radius: 3px;
+
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 21px;
+        
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        letter-spacing: 0.04em;
+
+        color: var(--cor-texto-botao-reservar);
     }
 `;

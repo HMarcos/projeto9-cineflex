@@ -9,11 +9,14 @@ import SelecaoDeAssentos from "./SelecaoDeAssentos";
 
 function App() {
 
-    const [infoCompra, setInfoCompra] = useState({});
+    const [infoPedido, setInfoPedido] = useState({});
 
-    function atualizarInfoCompra(dados) {
-        setInfoCompra(dados);
+    function atualizarInfoPedido(pedido) {
+        setInfoPedido(pedido);
     }
+
+    console.log("App:");
+    console.log(infoPedido);
 
     return (
         <BrowserRouter>
@@ -24,7 +27,7 @@ function App() {
                 <Route
                     path="/assentos/:idSessao"
                     element={<SelecaoDeAssentos
-                        atualizarInfoCompra={atualizarInfoCompra} />}>
+                        atualizarInfoPedido={atualizarInfoPedido} />}>
                 </Route>
             </Routes>
         </BrowserRouter>
